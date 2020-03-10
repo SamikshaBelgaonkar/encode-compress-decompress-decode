@@ -36,18 +36,19 @@ public class Encode {
 		return "no=" + no + ", name=" + name ;
 	}
 
-	public static byte[]  compress( final String strTobCompressed) throws UnsupportedEncodingException, IOException {
+	public static String  compress( final String strTobCompressed) throws UnsupportedEncodingException, IOException {
 		System.out.println("String length : " + strTobCompressed.length());
         ByteArrayOutputStream obj=new ByteArrayOutputStream();
         GZIPOutputStream gzip = new GZIPOutputStream(obj);
         gzip.write(strTobCompressed.getBytes("UTF-8"));
         gzip.close();
-        return obj.toByteArray();
+        return obj.toString();//obj.toByteArray();
 	}
-	public static String decompress( final byte[] StrToBdecompressed) throws IOException {
+	public static String decompress( final String StrToBdecompressed) throws IOException {
 	    final StringBuilder outStr = new StringBuilder();
 	    //newTry
-	    ByteArrayInputStream obj1 = new ByteArrayInputStream(StrToBdecompressed);
+	    byte[] StrToBdecompressedbyte = StrToBdecompressed.getBytes();
+	    ByteArrayInputStream obj1 = new ByteArrayInputStream(StrToBdecompressedbyte);
 	    final GZIPInputStream gis = new GZIPInputStream(obj1);
 	    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(gis, "UTF-8"));
 
@@ -72,7 +73,7 @@ public class Encode {
 		System.out.println("Encoded String :"+encodedString);
 		
 		//compress
-		byte[] compressed = compress(encodedString);
+		String compressed = compress(encodedString);
 		System.out.println("compressed string: "+compressed);
 		
 		//decompress
